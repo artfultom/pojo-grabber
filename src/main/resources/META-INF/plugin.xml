@@ -1,12 +1,9 @@
 <idea-plugin>
-    <id>org.example.pojo-grabber</id>
+    <id>com.github.artfultom.grabber</id>
     <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="artfultomcat@gmail.com" url="www.github.com/artfultom">Andrey Vasilyev</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>Short description. Short description. Short description. Short description.</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -18,5 +15,13 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action
+                id="POJOGrabber.Generate.NewGroup"
+                class="com.github.artfultom.grabber.ProjectViewPopupMenuActionClass"
+                text="Generate POJOs"
+                description="Generate POJOs">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl meta alt A"/><!-- test -->
+        </action>
     </actions>
 </idea-plugin>
