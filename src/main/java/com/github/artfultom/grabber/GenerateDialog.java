@@ -1,17 +1,21 @@
 package com.github.artfultom.grabber;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
-
 
 public class GenerateDialog extends DialogWrapper {
 
-    public GenerateDialog() {
-        super(true);
+    private Model model = new Model();
+
+    public GenerateDialog(Project project) {
+        super(project, true);
 
         init();
     }
@@ -23,16 +27,38 @@ public class GenerateDialog extends DialogWrapper {
 
         JLabel label = new JLabel("Source url:");
 
-        JTextField textField = new JTextField();
-        JCheckBox checkBox1 = new JCheckBox("CheckBox 1");
-        JCheckBox checkBox2 = new JCheckBox("CheckBox 2");
-        JCheckBox checkBox3 = new JCheckBox("CheckBox 3");
-        JCheckBox checkBox4 = new JCheckBox("CheckBox 4");
+        final JTextField textField = new JTextField();
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                model.setUrl(textField.getText());
+            }
 
-        checkBox1.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        checkBox2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        checkBox3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        checkBox4.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                model.setUrl(textField.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                model.setUrl(textField.getText());
+            }
+        });
+
+        final JCheckBox getters = new JCheckBox("Getters");
+        final JCheckBox constructor = new JCheckBox("Constructor");
+        final JCheckBox setters = new JCheckBox("Setters");
+        final JCheckBox serializable = new JCheckBox("Serializable");
+
+        getters.addItemListener(e -> model.setGetters(getters.isSelected()));
+        constructor.addItemListener(e -> model.setConstructor(constructor.isSelected()));
+        setters.addItemListener(e -> model.setSetters(setters.isSelected()));
+        serializable.addItemListener(e -> model.setSerializable(serializable.isSelected()));
+
+        getters.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        constructor.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        setters.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        serializable.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
@@ -45,11 +71,11 @@ public class GenerateDialog extends DialogWrapper {
                         .addComponent(textField)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(checkBox1)
-                                        .addComponent(checkBox3))
+                                        .addComponent(getters)
+                                        .addComponent(setters))
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(checkBox2)
-                                        .addComponent(checkBox4))))
+                                        .addComponent(constructor)
+                                        .addComponent(serializable))))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING))
         );
 
@@ -60,11 +86,11 @@ public class GenerateDialog extends DialogWrapper {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(checkBox1)
-                                        .addComponent(checkBox2))
+                                        .addComponent(getters)
+                                        .addComponent(constructor))
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(checkBox3)
-                                        .addComponent(checkBox4)))
+                                        .addComponent(setters)
+                                        .addComponent(serializable)))
                 )
         );
 
@@ -94,5 +120,61 @@ public class GenerateDialog extends DialogWrapper {
         };
 
         return new Action[]{generateAction, cancelAction};
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public static class Model {
+
+        private String url;
+        private boolean getters;
+        private boolean constructor;
+        private boolean setters;
+        private boolean serializable;
+
+        public Model() {
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public boolean isGetters() {
+            return getters;
+        }
+
+        public void setGetters(boolean getters) {
+            this.getters = getters;
+        }
+
+        public boolean isConstructor() {
+            return constructor;
+        }
+
+        public void setConstructor(boolean constructor) {
+            this.constructor = constructor;
+        }
+
+        public boolean isSetters() {
+            return setters;
+        }
+
+        public void setSetters(boolean setters) {
+            this.setters = setters;
+        }
+
+        public boolean isSerializable() {
+            return serializable;
+        }
+
+        public void setSerializable(boolean serializable) {
+            this.serializable = serializable;
+        }
     }
 }

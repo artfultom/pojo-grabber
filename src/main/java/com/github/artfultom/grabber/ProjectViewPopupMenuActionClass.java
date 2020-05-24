@@ -11,9 +11,11 @@ public class ProjectViewPopupMenuActionClass extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-        boolean result = new GenerateDialog().showAndGet();
+        GenerateDialog dialog = new GenerateDialog(event.getProject());
 
-        System.out.println(result); // TODO
+        if (dialog.showAndGet()) {
+            System.out.println(dialog.getModel().getUrl()); // TODO
+        }
     }
 
     @Override
