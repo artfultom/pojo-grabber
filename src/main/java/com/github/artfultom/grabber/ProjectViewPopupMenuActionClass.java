@@ -7,12 +7,27 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.impl.file.PsiDirectoryFactory;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class ProjectViewPopupMenuActionClass extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         GenerateDialog dialog = new GenerateDialog(event.getProject(), model -> {
-            System.out.println(model.getUrl()); // TODO
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(model.getUrl()))
+                    .build();
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenAccept(s -> {
+                        String fileStr = GeneratorUtils.generateFileStr(s);
+
+                        System.out.println(fileStr);    // TODO
+                    }).join();
         });
 
         dialog.show();

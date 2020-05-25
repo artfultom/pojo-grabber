@@ -32,6 +32,7 @@ public class GenerateDialog extends DialogWrapper {
         JLabel label = new JLabel("Source url:");
 
         final JTextField textField = new JTextField();
+        textField.setText(model.getUrl());  // TODO
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -134,7 +135,7 @@ public class GenerateDialog extends DialogWrapper {
 
     public static class Model {
 
-        private String url;
+        private String url = "https://financialmodelingprep.com/api/v3/rating/AAPL?apikey=demo";    // TODO
         private boolean getters;
         private boolean constructor;
         private boolean setters;
