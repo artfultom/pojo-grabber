@@ -1,6 +1,6 @@
 <idea-plugin>
-    <id>com.github.artfultom.grabber</id>
-    <name>Plugin display name here</name>
+    <id>com.github.artfultom.grabber.POJOGrabber</id>
+    <name>POJOGrabber</name>
     <vendor email="artfultomcat@gmail.com" url="www.github.com/artfultom">Andrey Vasilyev</vendor>
 
     <description>Short description. Short description. Short description. Short description.</description>
