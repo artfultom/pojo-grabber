@@ -9,13 +9,17 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
 
 public class GenerateDialog extends DialogWrapper {
 
     private Model model = new Model();
 
-    public GenerateDialog(Project project) {
+    private Consumer<Model> callback;
+
+    public GenerateDialog(Project project, Consumer<Model> callback) {
         super(project, true);
+        this.callback = callback;
 
         init();
     }
@@ -108,6 +112,8 @@ public class GenerateDialog extends DialogWrapper {
         DialogWrapperAction generateAction = new DialogWrapperAction("Generate") {
             @Override
             protected void doAction(ActionEvent e) {
+                callback.accept(model);
+
                 close(OK_EXIT_CODE);
             }
         };
